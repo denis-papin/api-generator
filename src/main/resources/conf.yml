@@ -1,0 +1,57 @@
+
+projectBase: C:/Users/denis/wks-birdy/api-generator/src/main/java
+
+definition:
+  # Model for the options
+  -
+    model:
+      name: option  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: com.globaljetlux.hubdb.dto
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        opt_grp_id as grp_id,
+        opt_usr_id as usr_id,
+        opt_id opt_id,
+        opt_page as page,
+        opt_key as key,
+        opt_value as value
+      FROM dcrespe_bbr.options
+      LIMIT 1
+
+    pivot:
+      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+        column: page # column alias from where (included) we pivot to the sub dto . TODO check usage and refactor
+        grouping: usrId # column alias used to group the level 1 dto together. TODO check usage and refactor, This is the model attribute name.
+        name: optionValue # pivot name (virtual model attribute).
+
+    dto:
+      packageName: com.globaljetlux.hubdb.dto
+
+    mapper:
+      packageName: com.globaljetlux.hubdb.dto
+
+  # Model for the seasons
+  -
+    model:
+      name: season  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: com.globaljetlux.hubdb.dto
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT seas_id as seas_id,
+              seas_grp_id  as grp_id,
+              seas_from as from,
+              seas_to as to,
+              seas_desc as desc
+      FROM dcrespe_bbr.season
+      LIMIT 1
+
+#    pivot: ... No pivot for this one.
+
+    dto:
+      packageName: com.globaljetlux.hubdb.dto
+
+    mapper:
+      packageName: com.globaljetlux.hubdb.dto
