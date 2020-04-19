@@ -1,7 +1,7 @@
-package com.globaljetlux.hubdb.service;
+package lu.isd.birdy.generator.service;
 
-import com.globaljetlux.hubdb.model.ModelInfo;
-import com.globaljetlux.hubdb.model.RecordInfo;
+import lu.isd.birdy.generator.model.ModelInfo;
+import lu.isd.birdy.generator.model.RecordInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

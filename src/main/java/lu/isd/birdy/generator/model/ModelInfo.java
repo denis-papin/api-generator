@@ -1,4 +1,4 @@
-package com.globaljetlux.hubdb.model;
+package lu.isd.birdy.generator.model;
 
 /**
  * This class can represent the Java fields needed to generate a POJO

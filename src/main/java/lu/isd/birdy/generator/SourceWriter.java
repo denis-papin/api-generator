@@ -1,4 +1,4 @@
-package com.globaljetlux.hubdb;
+package lu.isd.birdy.generator;
 
 import java.io.*;
 

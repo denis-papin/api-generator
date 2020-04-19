@@ -1,6 +1,6 @@
-package com.globaljetlux.hubdb.service;
+package lu.isd.birdy.generator.service;
 
-import com.globaljetlux.hubdb.config.Config;
+import lu.isd.birdy.generator.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;

@@ -1,4 +1,4 @@
-package com.globaljetlux.hubdb.model;
+package lu.isd.birdy.generator.model;
 
 public class RecordInfo {
 

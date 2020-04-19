@@ -1,4 +1,4 @@
-package com.globaljetlux.hubdb.service;
+package lu.isd.birdy.generator.service;
 
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
-package com.globaljetlux.hubdb.service;
+package lu.isd.birdy.generator.service;
 
-import com.globaljetlux.hubdb.SourceWriter;
-import com.globaljetlux.hubdb.model.ModelInfo;
+import lu.isd.birdy.generator.SourceWriter;
+import lu.isd.birdy.generator.model.ModelInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

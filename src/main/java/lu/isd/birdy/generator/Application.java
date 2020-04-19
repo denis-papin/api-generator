@@ -1,10 +1,10 @@
-package com.globaljetlux.hubdb;
+package lu.isd.birdy.generator;
 
-import com.globaljetlux.hubdb.config.Config;
-import com.globaljetlux.hubdb.config.Definition;
-import com.globaljetlux.hubdb.model.ModelInfo;
-import com.globaljetlux.hubdb.model.RecordInfo;
-import com.globaljetlux.hubdb.service.*;
+import lu.isd.birdy.generator.config.Config;
+import lu.isd.birdy.generator.config.Definition;
+import lu.isd.birdy.generator.model.ModelInfo;
+import lu.isd.birdy.generator.model.RecordInfo;
+import lu.isd.birdy.generator.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

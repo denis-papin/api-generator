@@ -1,10 +1,8 @@
-package com.globaljetlux.hubdb.dao;
+package lu.isd.birdy.generator.dao;
 
-import com.globaljetlux.hubdb.config.Config;
-import com.globaljetlux.hubdb.config.Definition;
-import com.globaljetlux.hubdb.model.RecordInfo;
-import com.globaljetlux.hubdb.service.ConfigService;
-import com.globaljetlux.hubdb.service.NamingService;
+import lu.isd.birdy.generator.config.Definition;
+import lu.isd.birdy.generator.model.RecordInfo;
+import lu.isd.birdy.generator.service.NamingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
