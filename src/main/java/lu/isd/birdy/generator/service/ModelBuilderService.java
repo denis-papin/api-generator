@@ -12,27 +12,7 @@ import java.util.Map;
 @Component
 public class ModelBuilderService {
 
-    static final Map<String, String> MODEL_TYPE_MAP = modelTypeMap();
-
-    protected static Map<String, String> modelTypeMap() {
-        var map = new HashMap<String, String>();
-
-        // Mysql
-        map.put("BIGINT", "BigInteger");
-        map.put("INT", "BigInteger");
-        map.put("VARCHAR", "String");
-        map.put("DATETIME", "Timestamp" );
-        map.put("DATE", "Date" );
-
-        // Postgres
-        map.put("int8", "BigInteger");
-        map.put("varchar", "String");
-        map.put("datetime", "Timestamp" );
-        map.put("date", "Date" );
-
-        return map;
-    }
-
+    private static final Map<String, String> MODEL_TYPE_MAP = ModelTypeMap.modelTypeMap();
 
     public List<ModelInfo> generate(List<RecordInfo> fields) {
         List<ModelInfo> modelInfo = new ArrayList<>();

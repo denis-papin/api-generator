@@ -32,6 +32,9 @@ public class Application implements CommandLineRunner {
     private ModelBuilderService modelBuilder;
 
     @Autowired
+    private TableModelBuilderService tableModelBuilder;
+
+    @Autowired
     private DtoBuilderService dtoBuilder;
 
     @Autowired
@@ -39,6 +42,9 @@ public class Application implements CommandLineRunner {
 
     @Autowired
     private MappingBuilderService mappingBuilder;
+
+    @Autowired
+    private ReversedMappingBuilderService reversedMappingBuilder;
 
     @Autowired
     private NamingService namingService;
@@ -60,12 +66,11 @@ public class Application implements CommandLineRunner {
 
             List<RecordInfo> fields = metaInfo.getInfo(def);
 
-            // Generate a fields of fields for the model.
+            // Generate a list of fields for the dao model.
             List<ModelInfo> modelInfo = modelBuilder.generate(fields);
 
             // Generate a fields of fields for the DTOs
             Map<String, List<ModelInfo>> dtoModelList = dtoBuilder.generate(def, modelInfo);
-
 
             // Generate Model Java files
             String modelName = namingService.capitalize(def.model.name);
@@ -78,6 +83,18 @@ public class Application implements CommandLineRunner {
 
             // Generate the field mapper class
             mappingBuilder.generate(def, PROJECT_BASE, def.mapper.packageName, modelName + "Mapper", modelInfo, dtoModelList);
+
+            // # Update
+
+            // ## Generate all the table dao models.
+            Map<String, List<ModelInfo>> tableModelInfoMap = tableModelBuilder.generate(fields);
+
+            for( var e : tableModelInfoMap.entrySet()) {
+                sourceFile.generate(PROJECT_BASE, def.model.packageName, e.getKey(), e.getValue());
+            }
+
+            // ## Generate the Dto to field reversed mapper class
+            reversedMappingBuilder.generate(def, PROJECT_BASE, def.mapper.packageName, modelName + "ReversedMapper", tableModelInfoMap, dtoModelList);
 
         }
 

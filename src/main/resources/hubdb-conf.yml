@@ -1,0 +1,45 @@
+projectBase: /home/dcrespe/prj/mib-techlog-api/src/main/java
+
+definition:
+  -
+    model:
+      name: crmTrip  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: com.globaljetlux.hubdb.model
+      naming: camelcase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        CR.id AS "routeId",
+        CR.aircraft AS "aircraftId",
+        (SELECT AI.icao FROM hubdb.aircraft AC LEFT OUTER JOIN aircraft_variant AV ON AV.id = AC.variant
+        LEFT OUTER JOIN aircraft_icao AI ON AI.id = AV.icao
+        WHERE AC.id = CR.aircraft ) AS aircraftIcao,
+        CR.type AS "crmTypeId",
+        (SELECT type FROM crm_type WHERE id = CR.type ) AS "crmTypeName",
+        CR.camo_techlog_number AS "camoTechlogNumber",
+        CT.id AS "tripId", -- pivot
+        CT.departure_airport AS "departureAirportId",
+        (SELECT icao FROM airport WHERE id = CT.departure_airport) AS  "departureAirportIcao" ,
+        CT.arrival_airport AS "arrivalAirportId",
+        (SELECT icao FROM airport WHERE id = CT.arrival_airport) AS "arrivalAirportName" ,
+        CT.takeoff_date AS "takeoffDate",
+        CT.landing_date AS "landingDate",
+        CT.flight_number AS "flightNumber"
+      FROM hubdb.crm_trip CT INNER JOIN hubdb.crm_route CR ON CR.id = CT.crm
+        WHERE CR.aircraft = 190  AND CR.type != 2
+      LIMIT 1
+
+    pivot:
+      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+      column: tripId # TODO check usage and reactor
+      grouping: routeId # TODO check usage and reactor
+      name: trip
+
+    dto:
+      packageName: com.globaljetlux.hubdb.dto
+
+    mapper:
+      packageName: com.globaljetlux.hubdb.mapper
+
+#    update:
+#      joinColumn: crm
