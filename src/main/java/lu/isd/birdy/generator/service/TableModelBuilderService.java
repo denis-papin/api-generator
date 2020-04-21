@@ -1,5 +1,6 @@
 package lu.isd.birdy.generator.service;
 
+import lu.isd.birdy.generator.config.Definition;
 import lu.isd.birdy.generator.model.ModelInfo;
 import lu.isd.birdy.generator.model.RecordInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TableModelBuilderService {
     @Autowired
     private NamingService namingService;
 
-    public Map<String, List<ModelInfo>> generate(List<RecordInfo> fields) {
+    public Map<String, List<ModelInfo>> generate(Definition def, List<RecordInfo> fields) {
         Map<String, List<ModelInfo>> modelInfoMap = new HashMap<>();
         String scope = "private";
 
@@ -31,7 +32,6 @@ public class TableModelBuilderService {
             String tableModelName = namingService.capitalize(namingService.snakeToCamel(f.getTableName())) + "Table";
             if (!modelInfoMap.containsKey(tableModelName)) {
                 modelInfoMap.put(tableModelName, new ArrayList<>());
-
             }
 
             List<ModelInfo> modelInfo = modelInfoMap.get(tableModelName);
@@ -48,15 +48,17 @@ public class TableModelBuilderService {
             modelInfo.add(model);
         }
 
-        // TODO insert the fk column used as join Ex :  "crm" FK to the crm_trip table model.
-        var model = new ModelInfo();
-        model.setFieldUuid("");
-        model.setScope(scope);
-        model.setType("BigInteger");
-        model.setIdentifier("crm"); // FK to crm_route
-        model.setJsonName("");
-        // TODO
-        modelInfoMap.get("CrmTripTable").add(model);
+        // Insert the fk column used as join Ex :  "crm" FK to the crm_trip table model.
+        if ( def.update != null && def.update.table != null && def.update.joinColumn != null ) {
+            String tableModelName = namingService.capitalize(namingService.snakeToCamel(def.update.table)) + "Table";
+            var model = new ModelInfo();
+            model.setFieldUuid("");
+            model.setScope(scope);
+            model.setType("BigInteger");
+            model.setIdentifier(def.update.joinColumn); // FK to crm_route
+            model.setJsonName("");
+            modelInfoMap.get(tableModelName).add(model);
+        }
 
         return modelInfoMap;
     }

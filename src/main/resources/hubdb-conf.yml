@@ -41,5 +41,6 @@ definition:
     mapper:
       packageName: com.globaljetlux.hubdb.mapper
 
-#    update:
-#      joinColumn: crm
+    update:
+      table: crm_trip
+      joinColumn: crm # join fk column name of the sub table

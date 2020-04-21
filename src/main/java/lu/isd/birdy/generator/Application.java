@@ -87,7 +87,7 @@ public class Application implements CommandLineRunner {
             // # Update
 
             // ## Generate all the table dao models.
-            Map<String, List<ModelInfo>> tableModelInfoMap = tableModelBuilder.generate(fields);
+            Map<String, List<ModelInfo>> tableModelInfoMap = tableModelBuilder.generate(def, fields);
 
             for( var e : tableModelInfoMap.entrySet()) {
                 sourceFile.generate(PROJECT_BASE, def.model.packageName, e.getKey(), e.getValue());

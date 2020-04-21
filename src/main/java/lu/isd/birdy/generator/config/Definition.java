@@ -12,6 +12,8 @@ public class Definition {
 
     public Mapper mapper;
 
+    public Update update;
+
     public Definition() {
     }
 }
