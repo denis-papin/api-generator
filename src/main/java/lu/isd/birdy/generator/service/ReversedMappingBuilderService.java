@@ -128,8 +128,36 @@ public class ReversedMappingBuilderService {
 
 
 
+
+
+
     protected void createMapper(  SourceWriter sw, Definition def, String dataModelName, List<ModelInfo> tableModel,
                                   String dtoModelName, List<ModelInfo> dtoModel) throws IOException {
+
+
+//        protected static CRMTable cRMTableMap (  CrmTripBddDto  dtoModel ) {
+//
+//            var tableModel = new CRMTable ();
+//            tableModel.setAircraftId (  dtoModel.getAircraftId() );
+//            tableModel.setCrmTypeId (  dtoModel.getCrmTypeId() );
+//            tableModel.setCamoTechlogNumber (  dtoModel.getCamoTechlogNumber() );
+//            return tableModel;
+//        }
+//
+//        protected static TripTable tripTableMap (  TripDto  dtoModel ) {
+//            var tableModel = new TripTable ();
+           // TODO  Loop all the TripTable model and set the values.
+//            tableModel.setLandingDate(DateConvert.offsetUTCAsTimestamp(dtoModel.getLandingDate()));
+//
+//            // ...
+//
+//            // tableModel.setRouteId (  dtoModel.getRouteId() );
+//            return tableModel;
+//        }
+
+        // TODO  Loop all the TripTable model and set the values.
+        // TODO  Loop all the TripTable model and set the values.
+        // TODO  Loop all the TripTable model and set the values.
 
         Config conf = configService.getConfig();
 
@@ -152,9 +180,14 @@ public class ReversedMappingBuilderService {
 
             if (dtoField != null) { // if the dtoField is part of the upper dtoModel
 
+                String getter = "dtoModel." + "get" + namingService.capitalize(dtoField.getIdentifier()) + "()";
+
+                if ( dtoField.getType().equals("OffsetDateTime") ) {
+                    getter =  "DateConvert.offsetUTCAsTimestamp(" + getter + ")";
+                }
+
                 sw.p("tableModel.set" + namingService.capitalize(field.getIdentifier()),
-                        "( ", "dtoModel.", "get" + namingService.capitalize(dtoField.getIdentifier())
-                                , "()", ")", ";");
+                        "( ", getter , ")", ";");
 
             }
         }

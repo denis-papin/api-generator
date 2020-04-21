@@ -22,6 +22,7 @@ public class SourceFileService {
         var map = new HashMap<String, String>();
         map.put("BigInteger", "java.math.BigInteger");
         map.put("Timestamp", "java.sql.Timestamp");
+        map.put("OffsetDateTime", "java.time.OffsetDateTime");
         map.put("Date", "java.sql.Date");
         map.put("JsonProperty", "com.fasterxml.jackson.annotation.JsonProperty" );
         return map;

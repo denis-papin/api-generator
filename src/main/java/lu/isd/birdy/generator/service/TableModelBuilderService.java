@@ -25,11 +25,14 @@ public class TableModelBuilderService {
 
         for (var f : fields) {
 
-            if (f.getTableName() == null || f.getTableName().equals("")) {
+            String tableName = f.getTableName();
+            String identifier = f.getName();
+
+            if (tableName == null || tableName.equals("")) {
                 continue; // ignore sub queries and computed columns.
             }
 
-            String tableModelName = namingService.capitalize(namingService.snakeToCamel(f.getTableName())) + "Table";
+            String tableModelName = namingService.capitalize(namingService.snakeToCamel(tableName)) + "Table";
             if (!modelInfoMap.containsKey(tableModelName)) {
                 modelInfoMap.put(tableModelName, new ArrayList<>());
             }
@@ -37,7 +40,6 @@ public class TableModelBuilderService {
             List<ModelInfo> modelInfo = modelInfoMap.get(tableModelName);
 
             String type = MODEL_TYPE_MAP.get(f.getColType());
-            String identifier = f.getName();
 
             var model = new ModelInfo();
             model.setFieldUuid(f.getFieldUuid());

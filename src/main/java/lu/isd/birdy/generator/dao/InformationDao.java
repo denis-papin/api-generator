@@ -28,6 +28,15 @@ public class InformationDao {
     @Qualifier("mapperdbJdbcTemplate")
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+    protected String forcedTableForColumn( Definition def, String alias ) {
+        if ( def.update != null && def.update.forceMapping != null && def.update.forceMapping.get(alias) != null ) {
+            String[] parts = def.update.forceMapping.get(alias).split("\\.");
+            return  parts[0];
+        }
+        return null;
+    }
+
+
     // TODO use a simple List<> to return the right object.
     public List<List<RecordInfo>> findInfo(Definition def) {
 
@@ -58,7 +67,14 @@ public class InformationDao {
 
                 ri.setName(name);
                 ri.setOriginalName(met.getColumnName(j));
-                ri.setTableName(met.getTableName(j));
+
+                String tableName = met.getTableName(j);
+                if (tableName == null || tableName.isEmpty()) {
+                    // We look if a table name has not been defined for this alias
+                    tableName = forcedTableForColumn(def, name);
+                }
+
+                ri.setTableName(tableName);
                 ri.setColType(met.getColumnTypeName(j));
                 ri.setPrecision(met.getPrecision(j));
                 ri.setScale(met.getScale(j));

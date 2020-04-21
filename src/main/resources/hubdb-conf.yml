@@ -13,7 +13,8 @@ definition:
         CR.aircraft AS "aircraftId",
         (SELECT AI.icao FROM hubdb.aircraft AC LEFT OUTER JOIN aircraft_variant AV ON AV.id = AC.variant
         LEFT OUTER JOIN aircraft_icao AI ON AI.id = AV.icao
-        WHERE AC.id = CR.aircraft ) AS aircraftIcao,
+        WHERE AC.id = CR.aircraft ) AS "aircraftIcao",
+        (SELECT AC.registration FROM hubdb.aircraft AC WHERE AC.id = CR.aircraft ) as "aircraftRegistrationNumber",
         CR.type AS "crmTypeId",
         (SELECT type FROM crm_type WHERE id = CR.type ) AS "crmTypeName",
         CR.camo_techlog_number AS "camoTechlogNumber",
@@ -44,3 +45,63 @@ definition:
     update:
       table: crm_trip
       joinColumn: crm # join fk column name of the sub table
+
+
+  -
+    model:
+      name: crmTripBdd # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: com.globaljetlux.hubdb.model.bdd
+      naming: camelcase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        tt.idCRM as "routeId",
+        "bdd" as "idSource",
+        tc.idAircraft as "aircraftId",
+        (SELECT C.azICAO FROM aircraft.Aircraft A
+        INNER JOIN aircraft.ICAO C ON C.idAircraftType =  A.idAircraftType WHERE A.idAircraft = tc.idAircraft ) as "aircraftIcao",
+        (SELECT A.azImmatriculation FROM aircraft.Aircraft A WHERE A.idAircraft = tc.idAircraft ) as "aircraftRegistrationNumber",
+        tc.iTypeCRM as "crmTypeId",
+        CASE
+        WHEN tc.iTypeCRM = 1 THEN "maintenance"
+        WHEN tc.iTypeCRM = 2 THEN "cancelled"
+        WHEN tc.iTypeCRM = 99 THEN "missing data"
+        WHEN (tc.iTypeCRM = 0 and tt.idCRM = 0) THEN "techlog 0"
+        ELSE "normal" /* means 0 */
+        END as "crmTypeName",
+        tc.techlogCamoId as "camoTechlogNumber",
+        tt.idTrip as "tripId",
+        -1 as "departureAirportId" ,
+        tt.icaoTakeOff as "departureAirportIcao" ,
+        -1 as "arrivalAirportId" ,
+        tt.icaoLanding as "arrivalAirportIcao" ,
+        CAST( COALESCE(tt.dateTakeOff, '1970-01-01 00:00:00' ) as DATETIME ) as "takeoffDate",
+        CAST( COALESCE(tt.dateLanding, '1970-01-01 00:00:00' ) as DATETIME ) as "landingDate",
+        CAST( COALESCE(tt.dateBlockOff, '1970-01-01 00:00:00' ) as DATETIME ) as "blockoffDate",
+        CAST( COALESCE(tt.dateBlockOn, '1970-01-01 00:00:00' ) as DATETIME ) as "blockonDate",
+        COALESCE(if (TRIM(tt.azFlightNumber)='','N/A', tt.azFlightNumber ), 'N/A') as "flightNumber"
+        FROM  techlog.Trip tt INNER JOIN techlog.CRM tc ON tc.idCRM = tt.idCRM
+        AND ( tt.idTrip = tc.idTrip1 OR tt.idTrip = tc.idTrip2 OR tt.idTrip = tc.idTrip3 )
+        AND tc.idAircraft IN (SELECT id FROM hubdb.aircraft)
+        AND tc.idAircraft = 224 AND tc.iTypeCRM != 2
+        LIMIT 1
+
+    pivot:
+      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+      column: tripId
+      grouping: routeId
+      name: trip
+
+    dto:
+      packageName: com.globaljetlux.hubdb.dto.bdd
+
+    mapper:
+      packageName: com.globaljetlux.hubdb.mapper.bdd
+
+    update:
+      table: Trip
+      joinColumn: idCRM # join fk column name of the sub table
+      forceMapping:
+        takeoffDate: Trip.takeoffDate # column alias with its corresponding real table+column. Used for fields hidden by functions.
+        landingDate: Trip.takeoffDate
+

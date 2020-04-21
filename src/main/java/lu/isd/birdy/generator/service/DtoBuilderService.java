@@ -19,16 +19,8 @@ public class DtoBuilderService {
 
     public Map<String, List<ModelInfo>> generate(Definition def, List<ModelInfo> daoModel) {
 
-        //Config conf = configService.getConfig();
-
-        /**
-         * We may know there is 1 pivot column or none.
-         * This is where the column order is very important.
-         */
-
+        // The column from which we switch to the sub dto model.
         boolean hasPivot = def.pivot != null;
-
-        // tripId is the pivot.
 
         var modelInfoMap = new HashMap<String, List<ModelInfo>>();
         var dtoModel1 = new ArrayList<ModelInfo>();
@@ -65,7 +57,12 @@ public class DtoBuilderService {
 
             dto.setFieldUuid(f.getFieldUuid());
             dto.setScope(f.getScope());
-            dto.setType(f.getType());
+
+            if ( f.getType().equals("Timestamp")) {
+                dto.setType("OffsetDateTime");
+            } else {
+                dto.setType(f.getType());
+            }
             dto.setIdentifier(f.getIdentifier());
             dto.setJsonName(namingService.dashCase(f.getIdentifier()));
 

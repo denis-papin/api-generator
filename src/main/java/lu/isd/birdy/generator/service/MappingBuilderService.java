@@ -27,6 +27,7 @@ public class MappingBuilderService {
         var map = new HashMap<String, String>();
         map.put("BigInteger", "java.math.BigInteger");
         map.put("Timestamp", "java.sql.Timestamp");
+        map.put("OffsetDateTime", "java.time.OffsetDateTime");
         map.put("Date", "java.sql.Date");
         map.put("JsonProperty", "com.fasterxml.jackson.annotation.JsonProperty" );
         return map;
@@ -75,9 +76,9 @@ public class MappingBuilderService {
                 sw.p( "import", pack, ";");
             }
 
-
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
+            sw.p( "import com.globaljetlux.hubdb.mapper.DateConvert;");
 
             sw.p();
 
@@ -281,8 +282,14 @@ public class MappingBuilderService {
 
             if (field != null) { // if the field is part of the upper model
 
-                sw.p("dto.set" + namingService.capitalize(field.getIdentifier()),
-                        "( ", "model.", "get" + namingService.capitalize(dtoField.getIdentifier()), "()", ")", ";");
+                String getter = "model." + "get" + namingService.capitalize(field.getIdentifier()) + "()";
+
+                if ( dtoField.getType().equals("OffsetDateTime") ) {
+                    getter =  "DateConvert.timestampAsUTCOffset(" + getter + ")";
+                }
+
+                sw.p("dto.set" + namingService.capitalize(dtoField.getIdentifier()),
+                        "( ", getter , ")", ";");
 
             }
         }
