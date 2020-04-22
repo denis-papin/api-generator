@@ -18,8 +18,7 @@ import java.util.Map;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-    private static Logger LOG = LoggerFactory
-            .getLogger(Application.class);
+    private static Logger LOG = LoggerFactory.getLogger(Application.class);
 
     @Autowired
     private ConfigService configService;
