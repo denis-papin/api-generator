@@ -60,6 +60,8 @@ public class DtoBuilderService {
 
             if ( f.getType().equals("Timestamp")) {
                 dto.setType("OffsetDateTime");
+            } if ( f.getType().equals("Date")) {
+                dto.setType("LocalDate");
             } else {
                 dto.setType(f.getType());
             }

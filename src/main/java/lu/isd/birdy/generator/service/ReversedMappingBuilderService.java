@@ -39,14 +39,43 @@ public class ReversedMappingBuilderService {
      *
      * Ex : Seasons : SeasonTable, SeasonDto, SeasonTableReversedMapper
      *
-     * 2- One table, 1 pivot =>
+     *          SeasonTable mapper( SeasonDto )
+     *
+     * 2- One table, 1 pivot/group =>
      *          1 model, 1 dto composite, 1 mapper
      *
-     * 3- Two tables (1-1) , no pivot =>
-     *          2 models (one with FK), 1 dto, 2 mappers
+     * Option :  OptionTable, OptionDto, OptionTableReversedMapper
+     *
+     *   protected static OptionsTable optionsTableMap (  OptionDto  dtoModel, OptionValueDto valueDto ) {
+
+             var tableModel = new OptionsTable ();
+             tableModel.setGrpId (  dtoModel.getGrpId() );
+             tableModel.setUsrId (  dtoModel.getUsrId() );
+             tableModel.setOptId (  dtoModel.getOptId() );
+
+             //--- Extended Reversed Mapper
+             tableModel.setKey(valueDto.getKey());
+             tableModel.setPage(valueDto.getPage());
+
+             return tableModel;
+     * }
+     *
+     * 3- Two (main) tables (1-1) , no pivot =>
+     *          2 models (one with FK), 1 linear dto, 2 mappers
+     *
+     * If there are 2 main tables, we must fill an update section ???
+     *
+     *          NO CASE FOR NOW. SHOULD BE HANDLED BY CASE 4.
      *
      * 4- Two tables (1-N), 1 pivot =>
      *          2 models (one with FK), 1 dto composite, 2 mappers.
+     *
+     * Ex : contact -> resa
+     *
+     *          ContactTable mapper(ResaContactDto)
+     *
+     *          ReservationTable mapper(ReservationDto)
+     *
      *
      * The goal is to get perfect ModelTable and DTOs and partial reversed mappers.
      *

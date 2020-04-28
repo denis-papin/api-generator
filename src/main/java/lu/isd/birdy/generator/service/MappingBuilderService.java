@@ -78,7 +78,7 @@ public class MappingBuilderService {
 
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
-            sw.p( "import com.globaljetlux.hubdb.mapper.DateConvert;");
+            sw.p( "import", def.mapper.packageName , ".DateConvert", ";");
 
             sw.p();
 
@@ -240,6 +240,10 @@ public class MappingBuilderService {
             sw.p("dto.", "set" + namingService.capitalize(def.pivot.name), "(subDtoList)", ";" );
 
         } // hasPivot
+        else {
+            //  i++;
+            sw.p("i++;");
+        }
 
         // dtos.add(dto);
         sw.p("dtos.add(dto);");

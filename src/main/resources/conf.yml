@@ -18,13 +18,14 @@ definition:
         opt_key as key,
         opt_value as value
       FROM dcrespe_bbr.options
+        WHERE opt_grp_id = 2
       LIMIT 1
 
-    pivot:
-      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
-        column: page # column alias from where (included) we pivot to the sub dto . TODO check usage and refactor
-        grouping: usrId # column alias used to group the level 1 dto together. TODO check usage and refactor, This is the model attribute name.
-        name: optionValue # pivot name (virtual model attribute).
+#    pivot:
+#      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+#        column: page # column alias from where (included) we pivot to the sub dto . TODO check usage and refactor
+#        grouping: usrId # column alias used to group the level 1 dto together. TODO check usage and refactor, This is the model attribute name.
+#        name: optionValue # pivot name (virtual model attribute).
 
     dto:
       packageName: lu.isd.birdy.dto
