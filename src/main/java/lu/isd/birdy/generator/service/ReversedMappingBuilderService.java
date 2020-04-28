@@ -68,17 +68,13 @@ public class ReversedMappingBuilderService {
             // Imports
 
             for ( var t : typeList) {
-
                 var pack = PACKAGE_TYPE_MAP.get(t);
                 if ( pack == null ) {
                     //pack = t;
                     continue;
                 }
-
                 sw.p( "import", pack, ";");
             }
-
-
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
 
@@ -107,12 +103,8 @@ public class ReversedMappingBuilderService {
                 createMapper(sw, def,  e.getKey(), e.getValue(), dtoModelName, rightDtoModel);
             }
 
-
             sw.p();
-
-
             sw.p();
-
             sw.inctab(-1);
 
             // Class closing
@@ -125,10 +117,6 @@ public class ReversedMappingBuilderService {
         }
 
     }
-
-
-
-
 
 
     protected void createMapper(  SourceWriter sw, Definition def, String dataModelName, List<ModelInfo> tableModel,
