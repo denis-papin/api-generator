@@ -50,7 +50,6 @@ public class ReversedMappingBuilderService {
      *
      * The goal is to get perfect ModelTable and DTOs and partial reversed mappers.
      *
-     *
      * @param def
      * @param path
      * @param packageName
