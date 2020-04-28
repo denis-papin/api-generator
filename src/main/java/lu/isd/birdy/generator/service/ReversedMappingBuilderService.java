@@ -33,6 +33,31 @@ public class ReversedMappingBuilderService {
     }
 
 
+    /**
+     * 1- One table , no pivot =>
+     *          1 model , 1 dto , 1 mapper
+     *
+     * Ex : Seasons : SeasonTable, SeasonDto, SeasonTableReversedMapper
+     *
+     * 2- One table, 1 pivot =>
+     *          1 model, 1 dto composite, 1 mapper
+     *
+     * 3- Two tables (1-1) , no pivot =>
+     *          2 models (one with FK), 1 dto, 2 mappers
+     *
+     * 4- Two tables (1-N), 1 pivot =>
+     *          2 models (one with FK), 1 dto composite, 2 mappers.
+     *
+     * The goal is to get perfect ModelTable and DTOs and partial reversed mappers.
+     *
+     *
+     * @param def
+     * @param path
+     * @param packageName
+     * @param className
+     * @param tableModelMap
+     * @param dtoModelMap
+     */
     public void generate(Definition def, String path, String packageName, String className, Map<String, List<ModelInfo>> tableModelMap, Map<String, List<ModelInfo>> dtoModelMap) {
 
         Config conf = configService.getConfig();
