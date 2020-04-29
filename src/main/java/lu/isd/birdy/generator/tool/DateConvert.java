@@ -8,9 +8,14 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.TimeZone;
 
 public class DateConvert {
 
+    static {
+        // Very important to handle DB dates correctly.
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 
     /**
      Used for mysql, seems to be ok.
