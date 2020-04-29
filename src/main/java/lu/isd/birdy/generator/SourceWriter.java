@@ -8,6 +8,7 @@ public class SourceWriter {
     int numberOftab = 0;
 
     public SourceWriter(File f) throws IOException {
+        f.getParentFile().mkdirs();
         this.writer = new OutputStreamWriter(new FileOutputStream(f), "UTF-8");
     }
 

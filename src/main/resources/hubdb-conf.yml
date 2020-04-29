@@ -1,5 +1,8 @@
 projectBase: /home/dcrespe/prj/mib-techlog-api/src/main/java
 
+tools:
+  packageName: com.globaljetlux.hubdb.tools
+
 definition:
   -
     model:
@@ -10,6 +13,7 @@ definition:
     query: >
       SELECT
         CR.id AS "routeId",
+        "hubdb" as "idSource",
         CR.aircraft AS "aircraftId",
         (SELECT AI.icao FROM hubdb.aircraft AC LEFT OUTER JOIN aircraft_variant AV ON AV.id = AC.variant
         LEFT OUTER JOIN aircraft_icao AI ON AI.id = AV.icao
@@ -45,7 +49,6 @@ definition:
     update:
       table: crm_trip
       joinColumn: crm # join fk column name of the sub table
-
 
   -
     model:
@@ -104,4 +107,5 @@ definition:
       forceMapping:
         takeoffDate: Trip.takeoffDate # column alias with its corresponding real table+column. Used for fields hidden by functions.
         landingDate: Trip.takeoffDate
+
 

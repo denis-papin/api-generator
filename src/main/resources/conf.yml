@@ -1,6 +1,13 @@
 
 projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
 
+serializer:
+   LocalDate: LocalDateSerializer
+   OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
 definition:
   # Model for the options
   -

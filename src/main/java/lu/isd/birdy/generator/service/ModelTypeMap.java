@@ -12,14 +12,17 @@ public class ModelTypeMap {
         map.put("BIGINT", "BigInteger");
         map.put("INT", "BigInteger");
         map.put("VARCHAR", "String");
+        map.put("TEXT", "String");
         map.put("DATETIME", "Timestamp" );
         map.put("DATE", "Date" );
+        map.put("BIT", "Boolean" );
 
         // Postgres
         map.put("int8", "BigInteger");
         map.put("varchar", "String");
         map.put("datetime", "Timestamp" );
         map.put("date", "Date" );
+        map.put("text", "String");
 
         return map;
     }

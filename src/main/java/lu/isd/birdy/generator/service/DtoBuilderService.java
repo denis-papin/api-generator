@@ -1,5 +1,6 @@
 package lu.isd.birdy.generator.service;
 
+import lu.isd.birdy.generator.config.Config;
 import lu.isd.birdy.generator.config.Definition;
 import lu.isd.birdy.generator.model.ModelInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,15 @@ import java.util.Map;
 @Component
 public class DtoBuilderService {
 
+    @Autowired
+    private ConfigService configService;
 
     @Autowired
     private NamingService namingService;
 
     public Map<String, List<ModelInfo>> generate(Definition def, List<ModelInfo> daoModel) {
+
+        Config conf = configService.getConfig();
 
         // The column from which we switch to the sub dto model.
         boolean hasPivot = def.pivot != null;
@@ -60,13 +65,20 @@ public class DtoBuilderService {
 
             if ( f.getType().equals("Timestamp")) {
                 dto.setType("OffsetDateTime");
-            } if ( f.getType().equals("Date")) {
+            } else if ( f.getType().equals("Date")) {
                 dto.setType("LocalDate");
             } else {
                 dto.setType(f.getType());
             }
             dto.setIdentifier(f.getIdentifier());
             dto.setJsonName(namingService.dashCase(f.getIdentifier()));
+            dto.setSerializerName("");
+            if ( conf.serializer != null ) {
+                String serializer = conf.serializer.get(dto.getType());
+                if ( serializer != null && ! serializer.isEmpty() ) {
+                    dto.setSerializerName(serializer);
+                }
+            }
 
             if ( level1 ) {
                 dtoModel1.add(dto);
@@ -83,6 +95,7 @@ public class DtoBuilderService {
         dto.setType("int");
         dto.setIdentifier("order");
         dto.setJsonName("");
+        dto.setSerializerName("");
         dtoModel1.add(dto);
         if (hasPivot) {
             dtoModel2.add(dto);

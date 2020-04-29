@@ -1,6 +1,7 @@
 package lu.isd.birdy.generator.service;
 
 import lu.isd.birdy.generator.SourceWriter;
+import lu.isd.birdy.generator.config.Config;
 import lu.isd.birdy.generator.model.ModelInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,9 @@ public class SourceFileService {
     static final Map<String, String> PACKAGE_TYPE_MAP = buildPackageType();
 
     @Autowired
+    private ConfigService configService;
+
+    @Autowired
     private NamingService namingService;
 
     protected static Map<String, String> buildPackageType() {
@@ -23,12 +27,17 @@ public class SourceFileService {
         map.put("BigInteger", "java.math.BigInteger");
         map.put("Timestamp", "java.sql.Timestamp");
         map.put("OffsetDateTime", "java.time.OffsetDateTime");
+        map.put("LocalDate", "java.time.LocalDate");
         map.put("Date", "java.sql.Date");
         map.put("JsonProperty", "com.fasterxml.jackson.annotation.JsonProperty" );
+        map.put("JsonSerialize", "com.fasterxml.jackson.databind.annotation.JsonSerialize" );
         return map;
     }
 
     public void generate(String path, String packageName, String className, List<ModelInfo> fields) {
+
+        Config conf = configService.getConfig();
+
         SourceWriter sw = null;
         try {
 
@@ -45,6 +54,10 @@ public class SourceFileService {
                 if ( f.getJsonName() != null && !f.getJsonName().isEmpty()) {
                     typeList.add("JsonProperty");
                 }
+
+                if ( conf.serializer != null ) {
+                    typeList.add("JsonSerialize");
+                }
             }
 
             // Package name
@@ -57,6 +70,8 @@ public class SourceFileService {
             sw.p("import", "java.io.Serializable", ";" );
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
+
+            sw.p("import ", conf.tools.packageName + ".*", ";");
 
             for ( var t : typeList) {
 
@@ -92,6 +107,11 @@ public class SourceFileService {
                 if (!f.getJsonName().isEmpty()) {
                     sw.p("@JsonProperty(", "\"" + f.getJsonName() + "\"", ")");
                 }
+
+                if ( f.getSerializerName() != null && !f.getSerializerName().isEmpty()) {
+                    sw.p("@JsonSerialize(", "using = " ,  f.getSerializerName() + ".class", ")" );
+                }
+
                 sw.p("public", f.getType(), "get" + namingService.capitalize(f.getIdentifier()) + "()", "{");
 
                 sw.inctab(1);

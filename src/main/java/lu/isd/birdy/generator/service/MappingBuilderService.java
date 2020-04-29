@@ -78,7 +78,7 @@ public class MappingBuilderService {
 
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
-            sw.p( "import", def.mapper.packageName , ".DateConvert", ";");
+            sw.p( "import", conf.tools.packageName , ".DateConvert", ";");
 
             sw.p();
 
@@ -290,6 +290,8 @@ public class MappingBuilderService {
 
                 if ( dtoField.getType().equals("OffsetDateTime") ) {
                     getter =  "DateConvert.timestampAsUTCOffset(" + getter + ")";
+                } else if ( dtoField.getType().equals("LocalDate") ) {
+                    getter =  "DateConvert.dateAsUTCLocal(" + getter + ")";
                 }
 
                 sw.p("dto.set" + namingService.capitalize(dtoField.getIdentifier()),

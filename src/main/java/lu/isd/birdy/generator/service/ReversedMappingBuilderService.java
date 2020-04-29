@@ -130,6 +130,7 @@ public class ReversedMappingBuilderService {
             }
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
+            sw.p( "import", conf.tools.packageName , ".DateConvert", ";");
 
             sw.p();
 
@@ -225,6 +226,8 @@ public class ReversedMappingBuilderService {
 
                 if ( dtoField.getType().equals("OffsetDateTime") ) {
                     getter =  "DateConvert.offsetUTCAsTimestamp(" + getter + ")";
+                } else  if ( dtoField.getType().equals("LocalDate") ) {
+                    getter =  "DateConvert.localUTCAsDate(" + getter + ")";
                 }
 
                 sw.p("tableModel.set" + namingService.capitalize(field.getIdentifier()),

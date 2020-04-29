@@ -11,6 +11,7 @@ public class ModelInfo {
     String type;
     String identifier;
     String jsonName;
+    String serializerName;
 
     public ModelInfo() {
     }
@@ -53,6 +54,14 @@ public class ModelInfo {
 
     public void setJsonName(String jsonName) {
         this.jsonName = jsonName;
+    }
+
+    public String getSerializerName() {
+        return serializerName;
+    }
+
+    public void setSerializerName(String serializerName) {
+        this.serializerName = serializerName;
     }
 
     @Override
