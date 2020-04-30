@@ -206,7 +206,7 @@ public class ReversedMappingBuilderService {
         // Change CrmTripDto into CrmTrip
         String mapperFunctionName = namingService.uncapitalize( namingService.dtoToModel(dataModelName) ) + "Map";
 
-        sw.p("protected static", dataModelName, mapperFunctionName, "( ", dtoModelName," dtoModel )",  "{");
+        sw.p("public static", dataModelName, mapperFunctionName, "( ", dtoModelName," dtoModel )",  "{");
 
         sw.p();
 

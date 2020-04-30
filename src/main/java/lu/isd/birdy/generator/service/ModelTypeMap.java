@@ -16,6 +16,7 @@ public class ModelTypeMap {
         map.put("DATETIME", "Timestamp" );
         map.put("DATE", "Date" );
         map.put("BIT", "Boolean" );
+        map.put("TIMESTAMP", "Timestamp" );
 
         // Postgres
         map.put("int8", "BigInteger");

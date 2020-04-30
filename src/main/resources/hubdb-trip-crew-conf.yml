@@ -1,0 +1,45 @@
+projectBase: /home/dcrespe/prj/mib-techlog-api/src/main/java
+
+tools:
+  packageName: com.globaljetlux.hubdb.tools
+
+#serializer:
+#  LocalDate: LocalDateSerializer
+#  OffsetDateTime: OffsetDateTimeSerializer
+
+definition:
+  -
+    # Model generator for TRIP CREW
+    model:
+      name: tripCrew  # This implies the first dto model (AircraftDto) and the model name (Aircraft)
+      packageName: com.globaljetlux.hubdb.model.tripcrew
+      naming: camelcase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+      	id AS "id",
+      	trip AS "tripId",
+      	crew AS "crewId",
+      	coalesce( (SELECT S.name FROM staff S WHERE S.id = C.crew), crew_name )  AS "crewName",
+      	role AS "roleId",
+      	(SELECT  role FROM crew_role R WHERE R.id  = C.role )  AS "roleName"
+      FROM trip_crew C
+      WHERE C.trip = 51
+      ORDER BY role
+      LIMIT 1
+
+#    pivot:
+#      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+#      column: tripId # TODO check usage and reactor
+#      grouping: routeId # TODO check usage and reactor
+#      name: trip
+
+    dto:
+      packageName: com.globaljetlux.hubdb.dto.tripcrew
+
+    mapper:
+      packageName: com.globaljetlux.hubdb.mapper.tripcrew
+
+#    update:
+#      table: crm_trip
+#      joinColumn: crm # join fk column name of the sub table
