@@ -20,6 +20,7 @@ public class ModelTypeMap {
 
         // Postgres
         map.put("int8", "BigInteger");
+        map.put("bigserial", "BigInteger");
         map.put("varchar", "String");
         map.put("datetime", "Timestamp" );
         map.put("date", "Date" );

@@ -9,11 +9,73 @@ tools:
   packageName: lu.isd.birdy.tools
 
 definition:
+
+
+
+
+  # Model for Currency
+  -
+    model:
+      name: currency  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.currency
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    # Be careful, aliases are snake case here but MUST BE camelcase in the myBatis SQL.
+    query: >
+      SELECT
+        cur_id AS "id",
+        cur_cd  AS "code",
+        cur_name  AS "name",
+        cur_symbol  AS "symbol",
+        cur_grp_id  AS "curGrpId"
+      FROM currency
+      LIMIT 1
+
+    # pivot:
+
+    dto:
+      packageName: lu.isd.birdy.dto.currency
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.currency
+
+
+  # Model for Accommodation
+  -
+    model:
+      name: accommodation  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.acco
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    # Be careful, aliases are snake case here but MUST BE camelcase in the myBatis SQL.
+    query: >
+      SELECT
+        acco_id,
+        acco_grp_id,
+        acco_ref,
+        acco_name,
+        acco_street,
+        acco_street_ex,
+        acco_postalcode,
+        acco_state,
+        acco_country
+      FROM accommodation
+      LIMIT 1
+
+    # pivot:
+
+    dto:
+      packageName: lu.isd.birdy.dto.acco
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.acco
+
+
   # Model for the options
   -
     model:
       name: option  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
-      packageName: lu.isd.birdy.model
+      packageName: lu.isd.birdy.model.option
       naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
 
     query: >
@@ -35,17 +97,17 @@ definition:
 #        name: optionValue # pivot name (virtual model attribute).
 
     dto:
-      packageName: lu.isd.birdy.dto
+      packageName: lu.isd.birdy.dto.option
 
     mapper:
-      packageName: lu.isd.birdy.mapping
+      packageName: lu.isd.birdy.mapping.option
 
 
   # Model for the seasons
   -
     model:
       name: season  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
-      packageName: lu.isd.birdy.model
+      packageName: lu.isd.birdy.model.season
       naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
 
     query: >
@@ -60,17 +122,17 @@ definition:
 #    pivot: ... No pivot for this one.
 
     dto:
-      packageName: lu.isd.birdy.dto
+      packageName: lu.isd.birdy.dto.season
 
     mapper:
-      packageName: lu.isd.birdy.mapping
+      packageName: lu.isd.birdy.mapping.season
 
 
   # Model for the contact / resa
   -
     model:
       name: contactResa  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
-      packageName: lu.isd.birdy.model
+      packageName: lu.isd.birdy.model.contactresa
       naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
 
     query: >
@@ -117,10 +179,10 @@ definition:
       name: reservation # pivot name (virtual model attribute).
 
     dto:
-      packageName: lu.isd.birdy.dto
+      packageName: lu.isd.birdy.dto.contactresa
 
     mapper:
-      packageName: lu.isd.birdy.mapping
+      packageName: lu.isd.birdy.mapping.contactresa
 
     update:
       table: reservation
