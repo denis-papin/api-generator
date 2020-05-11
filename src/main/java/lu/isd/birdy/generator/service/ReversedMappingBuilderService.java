@@ -131,6 +131,7 @@ public class ReversedMappingBuilderService {
             sw.p("import java.util.ArrayList;");
             sw.p("import java.util.List;");
             sw.p( "import", conf.tools.packageName , ".DateConvert", ";");
+            sw.p( "import", conf.tools.packageName , ".StringConvert", ";");
 
             sw.p();
 
@@ -176,31 +177,6 @@ public class ReversedMappingBuilderService {
     protected void createMapper(  SourceWriter sw, Definition def, String dataModelName, List<ModelInfo> tableModel,
                                   String dtoModelName, List<ModelInfo> dtoModel) throws IOException {
 
-
-//        protected static CRMTable cRMTableMap (  CrmTripBddDto  dtoModel ) {
-//
-//            var tableModel = new CRMTable ();
-//            tableModel.setAircraftId (  dtoModel.getAircraftId() );
-//            tableModel.setCrmTypeId (  dtoModel.getCrmTypeId() );
-//            tableModel.setCamoTechlogNumber (  dtoModel.getCamoTechlogNumber() );
-//            return tableModel;
-//        }
-//
-//        protected static TripTable tripTableMap (  TripDto  dtoModel ) {
-//            var tableModel = new TripTable ();
-           // TODO  Loop all the TripTable model and set the values.
-//            tableModel.setLandingDate(DateConvert.offsetUTCAsTimestamp(dtoModel.getLandingDate()));
-//
-//            // ...
-//
-//            // tableModel.setRouteId (  dtoModel.getRouteId() );
-//            return tableModel;
-//        }
-
-        // TODO  Loop all the TripTable model and set the values.
-        // TODO  Loop all the TripTable model and set the values.
-        // TODO  Loop all the TripTable model and set the values.
-
         Config conf = configService.getConfig();
 
         // Change CrmTripDto into CrmTrip
@@ -224,10 +200,20 @@ public class ReversedMappingBuilderService {
 
                 String getter = "dtoModel." + "get" + namingService.capitalize(dtoField.getIdentifier()) + "()";
 
-                if ( dtoField.getType().equals("OffsetDateTime") ) {
-                    getter =  "DateConvert.offsetUTCAsTimestamp(" + getter + ")";
-                } else  if ( dtoField.getType().equals("LocalDate") ) {
-                    getter =  "DateConvert.localUTCAsDate(" + getter + ")";
+                switch( dtoField.getType() ) {
+
+                    case "OffsetDateTime" :
+                        getter =  "DateConvert.offsetUTCAsTimestamp(" + getter + ")";
+                        break;
+                    case "LocalDate" :
+
+                        getter =  "DateConvert.localUTCAsDate(" + getter + ")";
+                        break;
+
+                    case "String" :
+                        getter =  "StringConvert.from(" + getter + ", \"N/A\", 60)"; // TODO get the max size from the db column definition
+                        break;
+
                 }
 
                 sw.p("tableModel.set" + namingService.capitalize(field.getIdentifier()),
