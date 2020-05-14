@@ -32,7 +32,19 @@ definition:
         (SELECT icao FROM airport WHERE id = CT.arrival_airport) AS "arrivalAirportName" ,
         CT.takeoff_date AS "takeoffDate",
         CT.landing_date AS "landingDate",
-        CT.flight_number AS "flightNumber"
+        CT.blockoff_date AS "blockoffDate",
+        CT.blockon_date AS "blockonDate",
+        CT.briefing_number AS "briefingNumber",
+        CT.flight_number AS "flightNumber",
+        CT.pax as "paxInPlane",
+        CT.pilot_flying as "pilotFlying",
+        CT.takeoff_fuel as "takeoffFuel",
+        CT.landing_fuel as "landingFuel",
+        CT.fuel_density  as "fuelDensity",
+        CT.mission as "missionId",
+        CT.cyberjet_id as "cyberjetId",
+        CT.camo_id  as "camoId",
+        CT.modified  as "modifiedTs"
       FROM hubdb.crm_trip CT INNER JOIN hubdb.crm_route CR ON CR.id = CT.crm
         WHERE CR.aircraft = 190  AND CR.type != 2
       LIMIT 1
@@ -57,6 +69,7 @@ definition:
       #      in the reversed mapper of the maintable.
       forceMapping:
         tmpIdCrm: crm_route.tmp_id_crm
+        tmpIdTrip: crm_trip.tmp_id_trip
 
   -
     model:
@@ -93,7 +106,17 @@ definition:
           CAST( COALESCE(tt.dateLanding, '1970-01-01 00:00:00' ) as DATETIME ) as "landingDate",
           CAST( COALESCE(tt.dateBlockOff, '1970-01-01 00:00:00' ) as DATETIME ) as "blockoffDate",
           CAST( COALESCE(tt.dateBlockOn, '1970-01-01 00:00:00' ) as DATETIME ) as "blockonDate",
-          COALESCE(if (TRIM(tt.azFlightNumber)='','N/A', tt.azFlightNumber ), 'N/A') as "flightNumber"
+          COALESCE(if (TRIM(tt.azBriefingNr)='','N/A', tt.azBriefingNr ), 'N/A') as "briefingNumber",
+          COALESCE(if (TRIM(tt.azFlightNumber)='','N/A', tt.azFlightNumber ), 'N/A') as "flightNumber",
+          tt.iPax as "paxInPlane",
+          tt.iPilotFlying as "pilotFlying",
+          tt.iFuelTakeOff as "takeoffFuel",
+          tt.iFuelLanding as "landingFuel",
+          tt.fuelDensity as "fuelDensity",
+          tt.idMission as "missionId",
+          tt.idCyberjet as "cyberjetId",
+          tt.camoId as "camoId",
+          tt.iTimeStamp as "modifiedTs"
         FROM  techlog.Trip tt INNER JOIN techlog.CRM tc ON tc.idCRM = tt.idCRM
           AND ( tt.idTrip = tc.idTrip1 OR tt.idTrip = tc.idTrip2 OR tt.idTrip = tc.idTrip3 )
           AND tc.idAircraft IN (SELECT id FROM hubdb.aircraft)
@@ -118,5 +141,6 @@ definition:
       forceMapping:
         takeoffDate: Trip.takeoffDate # column alias with its corresponding real table+column. Used for fields hidden by functions.
         landingDate: Trip.takeoffDate
-
-
+        blockoffDate:  Trip.dateBlockOff
+        blockonDate: Trip.dateBlockOn
+        briefingNumber:  Trip.azBriefingNr

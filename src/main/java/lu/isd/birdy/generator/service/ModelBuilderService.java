@@ -20,6 +20,11 @@ public class ModelBuilderService {
 
         for (var f : fields) {
             String type = MODEL_TYPE_MAP.get(f.getColType());
+
+            if ( type == null ) {
+                System.out.println("!!!! Unknown db field type : " + f.getColType() );
+            }
+
             String identifier = f.getName();
 
             var model = new ModelInfo();

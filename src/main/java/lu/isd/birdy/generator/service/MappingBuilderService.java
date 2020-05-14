@@ -26,6 +26,7 @@ public class MappingBuilderService {
     protected static Map<String, String> buildPackageType() {
         var map = new HashMap<String, String>();
         map.put("BigInteger", "java.math.BigInteger");
+        map.put("BigDecimal", "java.math.BigDecimal");
         map.put("Timestamp", "java.sql.Timestamp");
         map.put("OffsetDateTime", "java.time.OffsetDateTime");
         map.put("Date", "java.sql.Date");

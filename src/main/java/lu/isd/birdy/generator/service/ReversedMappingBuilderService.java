@@ -26,6 +26,7 @@ public class ReversedMappingBuilderService {
     protected static Map<String, String> buildPackageType() {
         var map = new HashMap<String, String>();
         map.put("BigInteger", "java.math.BigInteger");
+        map.put("BigDecimal", "java.math.BigDecimal");
         map.put("Timestamp", "java.sql.Timestamp");
         map.put("Date", "java.sql.Date");
         map.put("JsonProperty", "com.fasterxml.jackson.annotation.JsonProperty" );

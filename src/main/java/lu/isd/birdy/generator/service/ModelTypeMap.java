@@ -17,6 +17,8 @@ public class ModelTypeMap {
         map.put("DATE", "Date" );
         map.put("BIT", "Boolean" );
         map.put("TIMESTAMP", "Timestamp" );
+        map.put("DECIMAL", "BigDecimal" );
+        map.put("FLOAT", "BigDecimal" );
 
         // Postgres
         map.put("int8", "BigInteger");
