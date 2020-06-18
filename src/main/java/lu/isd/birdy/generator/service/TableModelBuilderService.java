@@ -66,25 +66,27 @@ public class TableModelBuilderService {
         // Insert the extra column defined in the forceColumn mapping
         // tmpIdCrm: crm_route.tmp_id_crm  => tmp_id_crm, INTEGER => setTmpIdCrm(  )
 
-        def.update.forceMapping.forEach(
-            // tmpIdCrm -> crm_route.tmp_id_crm
-            (k,v) -> {
-                String[] parts = v.split("\\."); //  [crm_route, tmp_id_crm]
-                String tableModelName = namingService.capitalize(namingService.snakeToCamel(parts[0])) + "Table";
-                var model = new ModelInfo();
-                model.setFieldUuid("");
-                model.setScope(scope);
-                model.setType("BigInteger"); // TODO find the type in the definition of the DB tables from parts[1]
-                model.setIdentifier(k); // tmpIdCrm (java field name)
-                model.setJsonName("");
+        if ( def.update != null  && def.update.forceMapping != null ) {
+            def.update.forceMapping.forEach(
+                    // tmpIdCrm -> crm_route.tmp_id_crm
+                    (k, v) -> {
+                        String[] parts = v.split("\\."); //  [crm_route, tmp_id_crm]
+                        String tableModelName = namingService.capitalize(namingService.snakeToCamel(parts[0])) + "Table";
+                        var model = new ModelInfo();
+                        model.setFieldUuid("");
+                        model.setScope(scope);
+                        model.setType("BigInteger"); // TODO find the type in the definition of the DB tables from parts[1]
+                        model.setIdentifier(k); // tmpIdCrm (java field name)
+                        model.setJsonName("");
 
-                // Search if k exists in the list of fields of the current table model.
-                long count = modelInfoMap.get(tableModelName).stream().filter((item) -> item.getIdentifier().equals(k)).count();
-                if (count == 0) {
-                    modelInfoMap.get(tableModelName).add(model);
-                }
-            }
-        );
+                        // Search if k exists in the list of fields of the current table model.
+                        long count = modelInfoMap.get(tableModelName).stream().filter((item) -> item.getIdentifier().equals(k)).count();
+                        if (count == 0) {
+                            modelInfoMap.get(tableModelName).add(model);
+                        }
+                    }
+            );
+        }
 
         return modelInfoMap;
     }

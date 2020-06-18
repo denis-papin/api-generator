@@ -1,5 +1,5 @@
 
-projectBase: /Users/denis/prj-birdy/birdy-server/src/main/java
+projectBase: /Users/denis/wks-birdy/birdy-server/src/main/java
 
 serializer:
   LocalDate: LocalDateSerializer
