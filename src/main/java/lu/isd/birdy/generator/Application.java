@@ -68,7 +68,7 @@ public class Application implements CommandLineRunner {
             // Generate a list of fields for the dao model.
             List<ModelInfo> modelInfo = modelBuilder.generate(fields);
 
-            // Generate a fields of fields for the DTOs
+            // Generate a list of fields for the DTOs
             Map<String, List<ModelInfo>> dtoModelList = dtoBuilder.generate(def, modelInfo);
 
             // Generate Model Java files

@@ -212,7 +212,7 @@ public class ReversedMappingBuilderService {
                         break;
 
                     case "String" :
-                        getter =  "StringConvert.from(" + getter + ", \"N/A\", 60)"; // TODO get the max size from the db column definition
+                        getter =  "StringConvert.from(" + getter + ", \"\", 60)"; // TODO get the max size from the db column definition
                         break;
 
                 }

@@ -27,6 +27,7 @@ public class ModelTypeMap {
         map.put("datetime", "Timestamp" );
         map.put("date", "Date" );
         map.put("text", "String");
+        map.put("numeric", "BigDecimal");
 
         return map;
     }
