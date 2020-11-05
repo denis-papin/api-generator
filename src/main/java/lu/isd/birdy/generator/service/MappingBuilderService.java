@@ -126,37 +126,6 @@ public class MappingBuilderService {
 
     protected void createGeneralMapper(SourceWriter sw, Definition def ) throws IOException {
 
-//        public static List<CrmTripDto> map(List<CrmTrip> models) {
-//            List<CrmTripDto> dtos = new ArrayList<>();
-//
-//            var i= 0;
-//            while (  i < models.size() ) {
-//
-//                var model = models.get(i);
-//
-//                var dto = crmTripMap(model);
-//
-//                var subDtoList = new ArrayList<TripDto>();
-//                var start = model.getRouteId();
-//
-//                do {
-//                    var subDto = tripMap ( model );
-//                    subDtoList.add(subDto);
-//                    i++;
-//                    if ( i < models.size() ) {
-//                        model = models.get(i);
-//                    }
-//                } while (  i < models.size() &&  model.getRouteId().equals(start) );
-//
-//                dto. setTrip(subDtoList);
-//
-//                dtos.add(dto);
-//            }
-//
-//            return dtos;
-//        }
-
-
         Config conf = configService.getConfig();
 
         boolean hasPivot = def.pivot != null;

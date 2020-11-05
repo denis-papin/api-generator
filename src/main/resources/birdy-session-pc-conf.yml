@@ -1,0 +1,64 @@
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+  LocalDate: LocalDateSerializer
+  OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the session
+  -
+    model:
+      name: session  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.session
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        sess_uuid as "uuid",
+        sess_usr_id as "usr_id",
+        sess_grp_id as "grp_id",
+        sess_start_time as "start_time",
+        sess_status as "status"
+      FROM session
+      LIMIT 1
+
+    #    pivot: ... No pivot for this one.
+
+    dto:
+      packageName: lu.isd.birdy.dto.session
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.session
+
+
+  -
+    model:
+      name: checklogin  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.session
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        grp_id        as "grp_id",
+        grp_name      as "grp_name",
+        usr_id        as "usr_id",
+        usr_name      as "usr_name",
+        usr_superuser as "superuser",
+        usr_password  as "passHash"
+      FROM  appgroup
+      INNER JOIN appuser
+        ON usr_grp_id = grp_id
+      LIMIT 1
+
+    #    pivot: ... No pivot for this one.
+
+    dto:
+      packageName: lu.isd.birdy.dto.session
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.session
+

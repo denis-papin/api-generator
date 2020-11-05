@@ -25,8 +25,10 @@ public class ModelTypeMap {
         map.put("bigserial", "BigInteger");
         map.put("varchar", "String");
         map.put("datetime", "Timestamp" );
+        map.put("timestamp", "Timestamp" );
         map.put("date", "Date" );
         map.put("text", "String");
+        map.put("bpchar", "String");
         map.put("numeric", "BigDecimal");
 
         return map;

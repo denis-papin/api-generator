@@ -53,6 +53,7 @@ public class DtoBuilderService {
                 dto.setType("List<"+ subDtoName +">");  // List<TripDto>
                 dto.setIdentifier(def.pivot.name); // trip, optionValue
                 dto.setJsonName("");
+                dto.setStringLength(f.getStringLength());
                 dtoModel1.add(dto);
 
                 level1 = false; // switch to level 2
@@ -79,6 +80,7 @@ public class DtoBuilderService {
                     dto.setSerializerName(serializer);
                 }
             }
+            dto.setStringLength(f.getStringLength());
 
             if ( level1 ) {
                 dtoModel1.add(dto);

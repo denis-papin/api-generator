@@ -25,6 +25,8 @@ public class ModelBuilderService {
                 System.out.println("!!!! Unknown db field type : " + f.getColType() );
             }
 
+            assert type != null;
+
             String identifier = f.getName();
 
             var model = new ModelInfo();
@@ -33,6 +35,9 @@ public class ModelBuilderService {
             model.setType(type);
             model.setIdentifier(identifier);
             model.setJsonName("");
+            if (type.equals("String")) {
+                model.setStringLength(f.getPrecision());
+            }
             modelInfo.add(model);
         }
 

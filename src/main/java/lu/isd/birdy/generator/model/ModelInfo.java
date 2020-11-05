@@ -12,6 +12,7 @@ public class ModelInfo {
     String identifier;
     String jsonName;
     String serializerName;
+    Integer stringLength;
 
     public ModelInfo() {
     }
@@ -62,6 +63,14 @@ public class ModelInfo {
 
     public void setSerializerName(String serializerName) {
         this.serializerName = serializerName;
+    }
+
+    public Integer getStringLength() {
+        return stringLength;
+    }
+
+    public void setStringLength(Integer stringLength) {
+        this.stringLength = stringLength;
     }
 
     @Override
