@@ -1,0 +1,38 @@
+
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+   LocalDate: LocalDateSerializer
+   OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the accommodation
+  -
+    model:
+      name: accommodation  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.acco
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        acco_id as "id",
+        acco_grp_id as "grp_id",
+        acco_ref as "reference",
+        acco_name as "name",
+        acco_street  as "street",
+        acco_street_ex as "street_ex",
+        acco_postalcode as "postal_code",
+        acco_state as "state",
+        acco_country as "country"
+        FROM accommodation
+      LIMIT 1
+
+    dto:
+      packageName: lu.isd.birdy.dto.acco
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.acco

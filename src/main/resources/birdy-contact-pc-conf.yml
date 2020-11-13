@@ -1,0 +1,69 @@
+
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+   LocalDate: LocalDateSerializer
+   OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the contact
+  -
+    model:
+      name: contact  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.contact
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        cont_id as "id",
+        cont_firstname as "firstname",
+        cont_middlename as "middlename",
+        cont_lastname as "lastname",
+        cont_no as "number",
+        cont_cat_cd as "category_code",
+        cont_gender as "gender",
+        cont_street as "street",
+        cont_street_ex as "street_ex",
+        cont_city as "city",
+        cont_postalcode as "postalcode",
+        cont_state as "state",
+        cont_country as "country",
+        cont_tel as "tel",
+        cont_fax as "fax",
+        cont_cell as "mobile",
+        cont_email as "email",
+        cont_comment as "comment",
+        cont_grp_id as "grp_id",
+        resa_id as "resa_id",
+        resa_acco_id as "acco_id",
+        resa_from as "start_date",
+        resa_to  as "end_date",
+        resa_comment as "observation",
+        resa_cont_id as "resa_cont_id",
+        resa_grp_id as "resa_grp_id",
+        acco_ref  as "acco_ref",
+        acco_name as "acco_name"
+      FROM  reservation
+      LEFT OUTER JOIN contact ON resa_cont_id = cont_id
+        INNER JOIN dcrespe_bbr.accommodation ON resa_acco_id = acco_id
+      LIMIT 1
+
+    pivot:
+      # Name of the virtual model field => setTrip, getTrip and implies the second dto model TripDto
+      column: resaId # column alias from where (included) we pivot to the sub dto . TODO check usage and refactor
+      grouping: id # column alias used to group the level 1 dto together. TODO check usage and refactor, This is the model attribute name.
+      name: reservation # pivot name (virtual model attribute).
+
+    dto:
+      packageName: lu.isd.birdy.dto.contact
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.contact
+
+    update:
+      table: reservation
+      joinColumn: resa_cont_id # join fk column name of the sub table

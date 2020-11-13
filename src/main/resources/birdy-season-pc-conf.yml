@@ -1,0 +1,34 @@
+
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+   LocalDate: LocalDateSerializer
+   OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the season
+  -
+    model:
+      name: season  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.season
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        seas_id as "id",
+        seas_grp_id "grpId",
+        seas_from as "start_date",
+        seas_to as "end_date",
+        seas_desc as "description"
+        FROM season
+      LIMIT 1
+
+    dto:
+      packageName: lu.isd.birdy.dto.season
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.season

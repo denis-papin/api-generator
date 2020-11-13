@@ -1,0 +1,34 @@
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+  LocalDate: LocalDateSerializer
+  OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the session
+  -
+    model:
+      name: translate  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.translate
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT 
+        trans_page, 
+        trans_lib, 
+        trans_txt
+      FROM 
+        translate_english
+      LIMIT 1
+
+    #    pivot: ... No pivot for this one.
+
+    dto:
+      packageName: lu.isd.birdy.dto.translate
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.translate

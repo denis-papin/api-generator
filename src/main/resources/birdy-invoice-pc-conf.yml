@@ -1,0 +1,48 @@
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+  LocalDate: LocalDateSerializer
+  OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the session
+  -
+    model:
+      name: invoice  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.invoice
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        inv_id as "id",
+        inv_resa_id as "resa_id",
+        inv_cont_id as "cont_id",
+        inv_grp_id as "grp_id",
+        inv_number as "invoice_number",
+        inv_net_amt as "net_amount",
+        inv_taxrate_amt as "tax_rate",
+        inv_debcre as "deb_cre",
+        inv_date as "invoice_date",
+        inv_type as "invoice_type",
+        inv_rec as "reconciled",
+        resa_from as "resa_from",
+        resa_to as "resa_to",
+        resa_acco_id as "acco_id",
+        cont_firstname as "firstname",
+        cont_lastname as "lastname"
+      FROM invoice
+      LEFT OUTER JOIN reservation ON inv_resa_id = resa_id
+      INNER JOIN contact ON inv_cont_id = cont_id
+      LIMIT 1
+
+    #    pivot: ... No pivot for this one.
+
+    dto:
+      packageName: lu.isd.birdy.dto.invoice
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.invoice
