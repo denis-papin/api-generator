@@ -217,7 +217,7 @@ public class ReversedMappingBuilderService {
                         if (l == null) {
                             l = 60;
                         }
-                        getter =  "StringConvert.from(" + getter + ", \"\", "+  l + ")";
+                        getter =  "StringConvert.from(" + getter + ", null, "+  l + ")";
                         break;
 
                 }

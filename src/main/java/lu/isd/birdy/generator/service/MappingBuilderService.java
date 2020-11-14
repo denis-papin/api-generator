@@ -185,9 +185,12 @@ public class MappingBuilderService {
             sw.p("subDto.setOrder(subCounter);");
             sw.p("subCounter++;");
 
+            sw.p("if ( model.get" + namingService.capitalize(def.pivot.column) + "()" + " != null ) {");
+            sw.inctab(1);
 //            subDtoList.add(subDto);
             sw.p("subDtoList.add(subDto);");
-
+            sw.inctab(-1);
+            sw.p("}");
 
     //            i++;
             sw.p("i++;");
