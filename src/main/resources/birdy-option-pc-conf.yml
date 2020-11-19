@@ -1,0 +1,60 @@
+
+projectBase: C:/Users/denis/wks-birdy/birdy-server/src/main/java
+
+serializer:
+   LocalDate: LocalDateSerializer
+   OffsetDateTime: OffsetDateTimeSerializer
+
+tools:
+  packageName: lu.isd.birdy.tools
+
+definition:
+
+  # Model for the global options
+  -
+    model:
+      name: globalOptions  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.globaloptions
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        gop_id as "id",
+        gop_grp_id as "grp_id",
+        gop_page as "page",
+        gop_key as "key",
+        gop_value as "value"
+      FROM
+        global_options
+      LIMIT 1
+
+    dto:
+      packageName: lu.isd.birdy.dto.globaloptions
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.globaloptions
+
+  # Model for the user options
+  -
+    model:
+      name: userOptions  # This implies the first dto model (CrmTripDto) and the model name (CrmTrip)
+      packageName: lu.isd.birdy.model.useroptions
+      naming: snakecase # Format of the db column aliases. camelcase for mysql and snakecase for Postgres
+
+    query: >
+      SELECT
+        uop_id as "id",
+        uop_grp_id as "grp_id",
+        uop_page as "page",
+        uop_key as "key",
+        uop_usr_id as "usr_id",
+        uop_value as "value"
+      FROM
+        user_options
+      LIMIT 1
+
+    dto:
+      packageName: lu.isd.birdy.dto.useroptions
+
+    mapper:
+      packageName: lu.isd.birdy.mapping.useroptions
