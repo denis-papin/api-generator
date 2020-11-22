@@ -239,7 +239,7 @@ public class ReversedMappingBuilderService {
     }
 
     protected String findOutRightDtoModel(List<ModelInfo> tableModel , Map<String, List<ModelInfo>> dtoModelMap ) {
-        String uuid = tableModel.get(0).getFieldUuid();
+        // String uuid = tableModel.get(0).getFieldUuid();
 
         for ( Map.Entry<String, List<ModelInfo>> e : dtoModelMap.entrySet()) {
             ModelInfo found = findDtoAttribute(tableModel.get(0), e.getValue());
